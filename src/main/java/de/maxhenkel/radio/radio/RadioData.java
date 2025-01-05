@@ -85,13 +85,14 @@ public class RadioData {
             return null;
         }
 
-        UUID uuid = UUID.randomUUID();
+        UUID uuid = null;
         String value = getValue(gameProfile, ID_TAG);
         if (value != null) {
             try {
                 uuid = UUID.fromString(value);
             } catch (Exception e) {
                 Radio.LOGGER.warn("Failed to parse UUID '{}'", value, e);
+                uuid = UUID.randomUUID();
             }
         }
 

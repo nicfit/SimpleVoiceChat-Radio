@@ -25,15 +25,20 @@ public class RadioManager {
     }
 
     public void onLoadHead(SkullBlockEntity skullBlockEntity) {
-        if (!(skullBlockEntity.getLevel() instanceof ServerLevel serverLevel))
+        if (!(skullBlockEntity.getLevel() instanceof ServerLevel serverLevel)) {
             return;
+        }
 
         ResolvableProfile resolvableProfile = skullBlockEntity.getOwnerProfile();
-        if(resolvableProfile == null) return;
+        if(resolvableProfile == null) {
+            return;
+        }
 
         GameProfile ownerProfile = resolvableProfile.gameProfile();
         RadioData radioData = RadioData.fromGameProfile(ownerProfile);
-        if (radioData == null) return;
+        if (radioData == null) {
+            return;
+        }
 
         this.updateStoredRadioData(skullBlockEntity, serverLevel, radioData, ownerProfile);
     }

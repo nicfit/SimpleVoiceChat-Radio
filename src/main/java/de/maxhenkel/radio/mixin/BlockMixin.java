@@ -26,21 +26,26 @@ public class BlockMixin {
 
     @Inject(method = "playerDestroy", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/block/Block;dropResources(Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/world/level/Level;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/entity/BlockEntity;Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/item/ItemStack;)V"), cancellable = true)
     public void playerDestroy(Level level, Player player, BlockPos blockPos, BlockState blockState, BlockEntity blockEntity, ItemStack itemStack, CallbackInfo ci) {
-        if (level.isClientSide())
+        if (level.isClientSide()) {
             return;
+        }
 
         boolean isNotPlayerHeadBlock = !blockState.getBlock().equals(Blocks.PLAYER_HEAD) &&
                                        !blockState.getBlock().equals(Blocks.PLAYER_WALL_HEAD);
-        if (isNotPlayerHeadBlock) return;
-
-        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity))
+        if (isNotPlayerHeadBlock) {
             return;
+        }
+
+        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity)) {
+            return;
+        }
 
         ResolvableProfile profile = skullBlockEntity.getOwnerProfile();;
-        if (profile == null) return;
+        if (profile == null) {
+            return;
+        }
 
         GameProfile ownerProfile = profile.gameProfile();
-
         RadioData radioData = RadioData.fromGameProfile(ownerProfile);
         if (radioData != null) {
             RadioManager.getInstance().onRemoveHead(radioData.getId());
@@ -52,24 +57,28 @@ public class BlockMixin {
 
     @Inject(method = "playerWillDestroy", at = @At(value = "HEAD"))
     public void destroy(Level level, BlockPos blockPos, BlockState blockState, Player player, CallbackInfoReturnable<BlockState> cir) {
-        if (level.isClientSide())
+        if (level.isClientSide()) {
             return;
+        }
 
         boolean isNotPlayerHeadBlock = !blockState.getBlock().equals(Blocks.PLAYER_HEAD) &&
                                        !blockState.getBlock().equals(Blocks.PLAYER_WALL_HEAD);
-        if (isNotPlayerHeadBlock) return;
+        if (isNotPlayerHeadBlock) {
+            return;
+        }
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-
-        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity))
+        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity)) {
             return;
+        }
 
         ResolvableProfile resolvableProfile = skullBlockEntity.getOwnerProfile();
-        if (resolvableProfile == null) return;
+        if (resolvableProfile == null) {
+            return;
+        }
 
         GameProfile ownerProfile = resolvableProfile.gameProfile();
         RadioData radioData = RadioData.fromGameProfile(ownerProfile);
-
         if (radioData != null)
             RadioManager.getInstance().onRemoveHead(radioData.getId());
     }

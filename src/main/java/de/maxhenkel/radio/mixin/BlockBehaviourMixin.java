@@ -26,22 +26,25 @@ public class BlockBehaviourMixin {
 
     @Inject(method = "useWithoutItem", at = @At("HEAD"), cancellable = true)
     public void use(BlockState blockState, Level level, BlockPos blockPos, Player player, BlockHitResult blockHitResult, CallbackInfoReturnable<InteractionResult> cir) {
-        if (level.isClientSide())
+        if (level.isClientSide()) {
             return;
+        }
 
         boolean isNotPlayerHeadBlock = !blockState.getBlock().equals(Blocks.PLAYER_HEAD) &&
                                     !blockState.getBlock().equals(Blocks.PLAYER_WALL_HEAD);
-        if (isNotPlayerHeadBlock) return;
-
+        if (isNotPlayerHeadBlock) {
+            return;
+        }
 
         BlockEntity blockEntity = level.getBlockEntity(blockPos);
-
-        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity))
+        if (!(blockEntity instanceof SkullBlockEntity skullBlockEntity)) {
             return;
+        }
 
         ResolvableProfile resolvable = skullBlockEntity.getOwnerProfile();
-
-        if(resolvable == null) return;
+        if (resolvable == null) {
+            return;
+        }
 
         GameProfile profile = resolvable.gameProfile();
         RadioData radioData = RadioData.fromGameProfile(profile);
