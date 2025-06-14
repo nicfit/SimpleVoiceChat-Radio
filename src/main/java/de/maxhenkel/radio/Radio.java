@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Radio implements ModInitializer {
 
-    public static final String MODID = "radio-nicfit";
+    public static final String MODID = "radio";
     public static final Logger LOGGER = LogManager.getLogger(MODID);
     public static ServerConfig SERVER_CONFIG;
 
